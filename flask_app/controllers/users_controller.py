@@ -5,9 +5,9 @@ from flask_app.models.user import User
 
 bcrypt = Bcrypt(app)
 
-@app.route("/")
-def login():
-    return render_template("login.html")
+@app.route("/register")
+def register():
+    return render_template("register.html")
 
 @app.route("/register", methods=["POST"])
 def process_register():
@@ -20,10 +20,14 @@ def process_register():
         data = {**request.form, "password": pw_hash}
         user_id = User.create(data)
         session["user_id"] = user_id
-        return redirect("/recipes")
+        return redirect("/home")
     except Exception as e:
         flash(f"Error during registration: {str(e)}", "register_error")
         return redirect("/")
+    
+@app.route("/login")
+def login():
+    return render_template("login.html")
 
 @app.route("/login", methods=["POST"])
 def process_login():
@@ -42,7 +46,7 @@ def process_login():
         return redirect("/")
 
     session["user_id"] = user_in_db.id
-    return redirect("/recipes")
+    return redirect("/home")
 
 
 

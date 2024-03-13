@@ -4,53 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My Real Estate Agency{% endblock %}</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-    </style>
+    <!--=============== REMIXICONS ===============-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css">
+
+    <!--=============== CSS ===============-->
+    <link rel="stylesheet" href="../static/style.css">
 </head>
 <body>
+    <nav class="nav container">
+        <a href="#" class="nav__logo">Logo</a>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-    
-            <div class=" collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav ms-auto ">
-                <li class="nav-item">
-                    <a class="nav-link mx-2 active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link mx-2" href="#">Products</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link mx-2" href="#">Pricing</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Company
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <li><a class="dropdown-item" href="#">Blog</a></li>
-                    <li><a class="dropdown-item" href="#">About Us</a></li>
-                    <li><a class="dropdown-item" href="#">Contact us</a></li>
-                    </ul>
-                </li>
-                </ul>
-            </div>
+        <div class="nav__menu" id="nav-menu">
+           <ul class="nav__list">
+              <li class="nav__item">
+                 <a href="#" class="nav__link">Home</a>
+              </li>
+
+              <li class="nav__item">
+                 <a href="#" class="nav__link">About Us</a>
+              </li>
+
+              <li class="nav__item">
+                 <a href="#" class="nav__link">Services</a>
+              </li>
+
+              <li class="nav__item">
+                 <a href="#" class="nav__link">Featured</a>
+              </li>
+
+              <li class="nav__item">
+                 <a href="#" class="nav__link">Contact Me</a>
+              </li>
+           </ul>
+
+           <!-- Close button -->
+           <div class="nav__close" id="nav-close">
+              <i class="ri-close-line"></i>
+           </div>
         </div>
-    </nav>
 
-<!-- Page content -->
-<div class="container">
-    {% block content %}{% endblock %}
-</div>
-<!-- Footer -->
-<footer>
-    <p>&copy; 2024 My Real Estate Agency</p>
-</footer>
+        <div class="nav__actions">
+           <!-- Search button -->
+           <i class="ri-search-line nav__search" id="search-btn"></i>
+
+           <!-- Login button -->
+           <i class="ri-user-line nav__login" id="login-btn"></i>
+
+           <!-- Toggle button -->
+           <div class="nav__toggle" id="nav-toggle">
+              <i class="ri-menu-line"></i>
+           </div>
+        </div>
+     </nav>
+
+    <!-- Page content -->
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 My Real Estate Agency</p>
+    </footer>
+
+    <!-- Bootstrap JS (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- MDB UI Kit JS -->
+    <script type="module">
+        import { Dropdown, Collapse, initMDB } from "https://cdn.jsdelivr.net/npm/mdb-ui-kit@3.2.0/dist/mdb.min.esm.js";
+
+        initMDB({ Dropdown, Collapse });
+    </script>
 </body>
 </html>
