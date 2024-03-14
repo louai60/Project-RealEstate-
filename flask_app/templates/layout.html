@@ -9,6 +9,9 @@
 
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="../static/style.css">
+
+    <!-- Custom CSS -->
+    {% block custom_css %}{% endblock %}
 </head>
 <body>
     <nav class="nav container">
@@ -17,7 +20,7 @@
         <div class="nav__menu" id="nav-menu">
            <ul class="nav__list">
               <li class="nav__item">
-                 <a href="#" class="nav__link">Home</a>
+                 <a href="/home" class="nav__link">Home</a>
               </li>
 
               <li class="nav__item">
@@ -25,30 +28,18 @@
               </li>
 
               <li class="nav__item">
-                 <a href="#" class="nav__link">Services</a>
+                 <a href="/properties" class="nav__link">all Properties</a>
               </li>
 
               <li class="nav__item">
-                 <a href="#" class="nav__link">Featured</a>
-              </li>
-
-              <li class="nav__item">
-                 <a href="#" class="nav__link">Contact Me</a>
+                 <a href="#" class="nav__link">add Property</a>
               </li>
            </ul>
-
-           <!-- Close button -->
-           <div class="nav__close" id="nav-close">
-              <i class="ri-close-line"></i>
-           </div>
         </div>
 
         <div class="nav__actions">
-           <!-- Search button -->
-           <i class="ri-search-line nav__search" id="search-btn"></i>
-
            <!-- Login button -->
-           <i class="ri-user-line nav__login" id="login-btn"></i>
+           <a href="/register"><i class="ri-user-line nav__login" id="login-btn"></i></a>
 
            <!-- Toggle button -->
            <div class="nav__toggle" id="nav-toggle">
@@ -61,21 +52,27 @@
     <div class="container">
         {% block content %}{% endblock %}
     </div>
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 My Real Estate Agency</p>
-    </footer>
+    
+    <footer class="text-center bg-body-tertiary bottom">
+      <!-- Grid container -->
+      <div class="container pt-4">
+          <!-- Section: Social media -->
+          <section class="mb-4">
+              <!-- Your social media icons here -->
+          </section>
+      </div>
+      <!-- Grid container -->
+  
+      <!-- Copyright -->
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+          © 2024 Copyright
+          <a class="text-body" href="#">RealEstate</a>
+      </div>
+      <!-- Copyright -->
+  </footer>
+  
 
-    <!-- Bootstrap JS (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <!-- MDB UI Kit JS -->
-    <script type="module">
-        import { Dropdown, Collapse, initMDB } from "https://cdn.jsdelivr.net/npm/mdb-ui-kit@3.2.0/dist/mdb.min.esm.js";
-
-        initMDB({ Dropdown, Collapse });
-    </script>
+    <!-- Custom JavaScript -->
+    {% block custom_js %}{% endblock %}
 </body>
 </html>

@@ -6,7 +6,17 @@ from flask_app.models import user
 @app.route("/home")
 def home():
 
-    return render_template("layout.html")
+    return render_template("home.html")
+
+@app.route("/property")
+def property():
+
+    return render_template("property.html")
+
+@app.route("/properties")
+def properties():
+
+    return render_template("properties.html")
 
 # @app.route("/recipes")
 # def display_all_recipes():

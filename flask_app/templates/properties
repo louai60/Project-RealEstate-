@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Makaan - Real Estate HTML Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="../static/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <style>
+        /*** Property List ***/
+        .nav-pills .nav-item .btn {
+            color: var(--dark);
+        }
+
+        .nav-pills .nav-item .btn:hover,
+        .nav-pills .nav-item .btn.active {
+            color: #FFFFFF;
+        }
+
+        .property-item {
+            box-shadow: 0 0 30px rgba(0, 0, 0, .08);
+        }
+
+        .property-item img {
+            transition: .5s;
+        }
+
+        .property-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .property-item .border-top {
+            border-top: 1px dashed #0d6efd !important;
+        }
+
+        .property-item .border-end {
+            border-right: 1px dashed #0d6efd!important;
+        }
+
+        .pages {
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 0; 
+            background-color: #fff; 
+            z-index: 888; 
+        }
+
+        .pages .page-item {
+            border: 2px solid #444444;
+            border-radius: 5px;
+            margin: 2px;
+        } 
+
+        .pages .page-item > * {
+            color: #000;
+            font-size: large;
+        }
+    </style>
+</head>
+<body>
+    {% extends "layout.html" %}
+    {% block content %}
+        <!-- Property List Start -->
+        <div class="container-xxl py-5">
+            <div class="container">
+                <div class="row g-0 gx-5 align-items-end">
+                    <div class="col-lg-6">
+                        <div class="text-start mx-auto mb-5 wow slideInLeft" data-wow-delay="0.1s">
+                            <h1 class="mb-3">Property Listing</h1>
+                            <p>Eirmod sed ipsum dolor sit rebum labore magna erat. Tempor ut dolore lorem kasd vero ipsum sit eirmod sit diam justo sed rebum.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
+                        <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
+                            <li class="nav-item me-2">
+                                <a class="btn btn-outline-primary active" data-bs-toggle="pill" href="#tab-1">Featured</a>
+                            </li>
+                            <li class="nav-item me-2">
+                                <a class="btn btn-outline-primary" data-bs-toggle="pill" href="#tab-2">For Sell</a>
+                            </li>
+                            <li class="nav-item me-0">
+                                <a class="btn btn-outline-primary" data-bs-toggle="pill" href="#tab-3">For Rent</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div id="tab-1" class="tab-pane fade show p-0 active">
+                        <div class="row g-4" id="property-list">
+                            <!-- Content will be dynamically replaced here -->
+                        </div>
+                    </div>
+                </div>
+                <div class="pages">
+                    <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Property List End -->
+    {% endblock %}
+    <script>
+        // Function to handle page navigation
+        function navigateToPage(pageNumber) {
+            // Make a GET request to fetch data for the selected page
+            fetch(`/properties?page=${pageNumber}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Assuming your data contains HTML content for the properties listing
+                    // Replace the existing content with the fetched content
+                    document.getElementById('property-list').innerHTML = data.html;
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+
+    
+        // Get all pagination links
+        const paginationLinks = document.querySelectorAll('.pagination .page-link');
+    
+        // Add click event listener to each pagination link
+        paginationLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent the default action of the link
+    
+                // Get the page number from the link's text content
+                const pageNumber = parseInt(this.textContent.trim());
+    
+                // Call the function to navigate to the selected page
+                navigateToPage(pageNumber);
+            });
+        });
+    </script>
+    
+    <!-- Template Javascript -->
+    <script src="../static/script.js"></script>
+</body>
+</html>
