@@ -28,4 +28,4 @@ function updateMarker(address) {
 }
 
 // Example: Update marker position for Tunis, Tunisia
-updateMarker('usa');
+updateMarker('canada');

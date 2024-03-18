@@ -149,9 +149,13 @@ img {
 }
 
 .nav__logo {
-  color: var(--title-color);
-  font-weight: var(--font-semi-bold);
   transition: color .4s;
+  width: fit-content;
+}
+
+.logo {
+  width: 150px;
+  height: 150px;
 }
 
 .nav__actions {
@@ -394,4 +398,50 @@ img {
   .container {
     margin-inline: auto;
   }
+}
+
+
+.dropdown-toggle {
+  color: #fff;
+}
+
+.profile-pic .img-circle {
+  border-radius: 50%;
+}
+.profile-pic span {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0 10px;
+  color: #555;
+}
+
+/*     User Dropdown    */
+.dropdown-user {
+  width: 280px;
+}
+
+.user-box {
+  display: flex;
+  padding: .25rem 1rem;
+}
+.user-box .u-img {
+  width: 80px;
+}
+.user-box .u-img img {
+  width: 100%;
+  border-radius: 5px;
+}
+.user-box .u-text {
+  padding: 0 10px;
+}
+.user-box .u-text h4 {
+  margin-bottom: 0;
+  font-size: 18px;
+}
+.user-box .u-text .text-muted {
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+.user-box .u-text .btn {
+  font-size: 12px;
 }
