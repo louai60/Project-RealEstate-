@@ -8,12 +8,202 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
+    <style>
+       .hero {
+            background-image: url('../static/img/bg_2.jpg');
+        }
+
+
+        .hero, .ftco-section {
+            height: 100vh;
+        }
+    </style>
+    
 </head>
 <body>
+    <section class="hero">
     {% extends "layout.html" %}
 
     {% block content %}
-    <div class="col-md-6 animated fadeIn">
+        {% with msg = get_flashed_messages(with_categories=True) %}
+        {% if msg %}
+          {% for category, message in msg %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+    
+     
+
+      <!-- <form method="POST" action="/">
+        <input type="text" name="location" placeholder="Search query">
+        <select name="property_type">
+            <option value="">Select Property Type</option>
+            <option value="type1">Commercial</option>
+            <option value="type2">- Office</option>
+            <option value="type3">Residential</option>
+            <option value="type4">Villa</option>
+            <option value="type5">Condominium</option>
+            <option value="type6">Apartment</option>
+        </select>
+        <select name="property_status">
+            <option value="">Select Property Status</option>
+            <option value="For Sell">For Sell</option>
+            <option value="For Rent">For Rent</option>
+        </select>
+        <input type="number" name="price_limit" placeholder="Price Limit">
+        <button type="submit">Search</button>
+    </form>
+    
+     -->
+    
+        <div class="hero-wrap"  data-stellar-background-ratio="0.5">
+            <div class="overlay"></div>
+            <div class="overlay-2"></div>
+            <div class="container">
+              <div class="row no-gutters slider-text justify-content-center align-items-center">
+                <div class="col-lg-8 col-md-6 ftco-animate d-flex align-items-end">
+                    <div class="text text-center w-100 mt-3">
+                      <h1 class="mb-4">Find Properties <br>That Make You Money</h1>
+                      <p><a href="/properties" class="btn btn-primary py-3 px-4">See All Properties</a></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mouse">
+                <a href="#" class="mouse-icon">
+                    <div class="mouse-wheel"><span class="ion-ios-arrow-round-down"></span></div>
+                </a>
+            </div>
+        </div>    
+    </section>
+  
+      <section class="ftco-section ftco-no-pb">
+          <div class="container">
+            <form method="POST" action="/">
+              <div class="row mt-3">
+                      <div class="col-md-12">
+                          <div class="search-wrap-1 ftco-animate">
+                              <form action="#" class="search-property-1">
+                          <div class="row">
+                              <div class="col-lg align-items-end">
+                                  <div class="form-group">
+                                      <label for="#">Location</label>
+                                    <div class="form-field">
+                                        <div class="icon"><span class="ion-ios-search"></span></div>
+                                  <input type="text" class="form-control" name="location" placeholder="City/Locality Name">
+                                </div>
+                            </div>
+                              </div>
+                              <div class="col-lg align-items-end">
+                                  <div class="form-group">
+                                      <label for="#">Property Type</label>
+                                      <div class="form-field">
+                                        <div class="select-wrap">
+                                <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                                <select name="property_type" id="" class="form-control">
+                                    <option value="">Type</option>
+                                  <option value="">Commercial</option>
+                                  <option value="">- Office</option>
+                                  <option value="">Residential</option>
+                                  <option value="">Villa</option>
+                                  <option value="">Condominium</option>
+                                  <option value="">Apartment</option>
+                                </select>
+                              </div>
+                                </div>
+                            </div>
+                              </div>
+                              <div class="col-lg align-items-end">
+                                  <div class="form-group">
+                                      <label for="#">Property Status</label>
+                                      <div class="form-field">
+                                        <div class="select-wrap">
+                                <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                                <select name="property_status" id="" class="form-control">
+                                    <option value="">Type</option>
+                                  <option value="For Rent">Rent</option>
+                                  <option value="For Sell">Sale</option>
+                                </select>
+                              </div>
+                                </div>
+                            </div>
+                              </div>
+                              <div class="col-lg align-items-end">
+                                  <div class="form-group">
+                                      <label for="#">Price Limit</label>
+                                      <div class="form-field">
+                                        <div class="select-wrap">
+                                <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                                <select name="price_limit" id="" class="form-control">
+                                  <option value="">$5,000</option>
+                                  <option value="">$10,000</option>
+                                  <option value="">$50,000</option>
+                                  <option value="">$100,000</option>
+                                  <option value="">$200,000</option>
+                                  <option value="">$300,000</option>
+                                  <option value="">$400,000</option>
+                                  <option value="">$500,000</option>
+                                  <option value="">$600,000</option>
+                                  <option value="">$700,000</option>
+                                  <option value="">$800,000</option>
+                                  <option value="">$900,000</option>
+                                  <option value="">$1,000,000</option>
+                                  <option value="">$2,000,000</option>
+                                </select>
+                              </div>
+                                </div>
+                            </div>
+                              </div>
+                              <div class="col-lg align-self-end">
+                                  <div class="form-group">
+                                      <div class="form-field">
+                                  <input type="submit" value="Search Property" class="form-control btn btn-primary">
+                                </div>
+                            </div>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+                      </div>
+              </div>
+            </form>
+          
+          <!-- Display Search Results -->
+     {% if results %}
+     <h2>Search Results</h2>
+     <div class="row">
+         {% for result in results %}
+             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                 <div class="property-item rounded overflow-hidden">
+                     <div class="position-relative overflow-hidden">
+                         <a href="/property/{{ result.id }}"><img class="img-fluid"  src="../static/img/property-2.jpg" alt="property"></a>
+                         <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">{{ result.status }}</div>
+                     </div>
+                     <div class="p-4 pb-0">
+                         <h5 class="text-primary mb-3">${{ result.price }}</h5>
+                         <a class="d-block h5 mb-2" href="/property/{{ result.id }}">{{ result.title }}</a>
+                         <p><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ result.address }}</p>
+                     </div>
+                     <div class="d-flex">
+                         <small class="flex-fill text-center py-2"><i class="fa fa-ruler-combined text-primary me-2"></i>{{ result.space }} Sqft</small>
+                         <small class="flex-fill text-center py-2"><i class="fa fa-bed text-primary me-2"></i>{{ result.bedrooms }} Bed</small>
+                         <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>{{ result.bathrooms }} Bath</small>
+                     </div>
+                 </div>
+             </div>
+         {% endfor %}
+     </div>
+ {% endif %}
+        </div>
+      </section>
+    
+
+    <!-- <div class="col-md-6 animated fadeIn">
         <div class="owl-carousel header-carousel">
             <div class="owl-carousel-item">
                 <img class="img-fluid" src="../static/img/property-1.jpg" alt="">
@@ -22,7 +212,7 @@
                 <img class="img-fluid" src="../static/img/property-2.jpg" alt="">
             </div>
         </div>
-    </div>
+    </div> -->
     {% endblock %}
 </body>
 </html>

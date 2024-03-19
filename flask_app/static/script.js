@@ -28,4 +28,39 @@ function updateMarker(address) {
 }
 
 // Example: Update marker position for Tunis, Tunisia
-updateMarker('usa');
+updateMarker('canada');
+
+// Filter
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('[name="show_all"], [name="for_sell"], [name="for_rent"]');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove the active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+
+            // Add the active class to the clicked button
+            this.classList.add('active');
+
+            const status = this.getAttribute('name');  // Get the status from button's name attribute
+            filterProperties(status);  // Call the function to filter properties
+        });
+    });
+});
+
+
+// function filterProperties(status) {
+//     const propertyItems = document.querySelectorAll('.property-item');  
+
+//     propertyItems.forEach(item => {
+//         const itemStatus = item.querySelector('.bg-primary').textContent.trim();  // Get property status
+
+//         if (status === 'show_all' || itemStatus.toLowerCase() === status.replace('_', ' ')) {
+//             item.style.display = 'block';
+//         } else {
+//             item.style.display = 'none';
+//         }
+//     });
+// }
+
+

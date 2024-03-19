@@ -3,76 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Real Estate Agency{% endblock %}</title>
+    <title>{% block title %}Real Estate {% endblock %}</title>
+    <link rel="icon" type="image/png" href="../static/img/logo.ico">
+
+    <!-- Bootstrap CSS -->
     <!--=============== REMIXICONS ===============-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css">
-
-    <!--=============== CSS ===============-->
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="../static/style.css">
 
-    <!-- Custom CSS -->
-    {% block custom_css %}{% endblock %}
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
 </head>
 <body>
     <nav class="nav container">
-        <a href="#" class="nav__logo">Logo</a>
+        <a href="/" class="nav__logo"><img src="../static/img/logo.ico" alt="logo" class="logo"></a>
 
         <div class="nav__menu" id="nav-menu">
-           <ul class="nav__list">
-              <li class="nav__item">
-                 <a href="/home" class="nav__link">Home</a>
-              </li>
-
-              <li class="nav__item">
-                 <a href="#" class="nav__link">About Us</a>
-              </li>
-
-              <li class="nav__item">
-                 <a href="/properties" class="nav__link">all Properties</a>
-              </li>
-
-              <li class="nav__item">
-                 <a href="#" class="nav__link">add Property</a>
-              </li>
-           </ul>
+            <ul class="nav__list">
+                <li class="nav__item">
+                    <a href="/" class="nav__link active">Home</a>
+                </li>
+                <li class="nav__item">
+                    <a class=" nav__link" href="/about">About Us</a>
+                </li>
+                <li class="nav__item">
+                    <a href="/properties" class="nav__link">All Properties</a>
+                </li>
+                <li class="nav__item">
+                    <a href="/add_property" class="nav__link">Add a Property</a>
+                </li>
+                <li class="nav__item">
+                    <a class=" nav__link" href="/contact">Contact Us</a>
+                </li>
+                <!-- {% if session.user_id == is_admin %}
+                    <li class="nav-item"><a href="/admin/dashboard">Dashboard</a></li>
+                {% endif %} -->
+            </ul>
         </div>
 
         <div class="nav__actions">
-           <!-- Login button -->
-           <a href="/register"><i class="ri-user-line nav__login" id="login-btn"></i></a>
-
-           <!-- Toggle button -->
-           <div class="nav__toggle" id="nav-toggle">
-              <i class="ri-menu-line"></i>
-           </div>
+            <!-- Check if user is logged in -->
+            {% if session.user_id %}
+            <li class="nav-item dropdown">
+                <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="../static/img/profile2.jpg" alt="user-img" width="36" class="img-circle"><span ></span></span> </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li>
+                        <div class="user-box">
+                            <div class="u-img"><img src="../static/img/profile2.jpg" alt="user"></div>
+                            <div class="u-text">
+                                <h4>user_data.username</h4>
+                                <p class="text-muted">user_data.email</p><a href="/account" class="btn btn-rounded btn-primary btn-sm">View Profile</a></div>
+                            </div>
+                        
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/account"><i class="ti-user"></i> My Profile</a>
+                            <a class="dropdown-item" href="#"></i> My Balance</a>
+                            <a class="dropdown-item" href="#"><i class="ti-email"></i> Inbox</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#"><i class="ti-settings"></i> Account Setting</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/logout"><i class="fa fa-power-off"></i> Logout</a>
+                        </div>
+                    </li>
+                    <!-- /.dropdown-user -->
+                </ul>
+            </li>
+            {% else %}
+                <!-- Login button -->
+                <a href="/login" class="nav__login"><button type="button" class="btn btn-primary">Login</button></a>
+            {% endif %}
+            <!-- Toggle button -->
+            <div class="nav__toggle" id="nav-toggle">
+                <i class="ri-menu-line"></i>
+            </div>
+            
         </div>
-     </nav>
+    </nav>
 
     <!-- Page content -->
     <div class="container">
-        {% block content %}{% endblock %}
+        {% block content %}
+        {% with msg = get_flashed_messages(with_categories=True) %}
+                {% if msg %}
+                    {% for category, message in msg %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        <strong>{{ message }}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        {% endblock %}
     </div>
-    
-    <footer class="text-center bg-body-tertiary bottom">
-      <!-- Grid container -->
-      <div class="container pt-4">
-          <!-- Section: Social media -->
-          <section class="mb-4">
-              <!-- Your social media icons here -->
-          </section>
-      </div>
-      <!-- Grid container -->
-  
-      <!-- Copyright -->
-      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
-          © 2024 Copyright
-          <a class="text-body" href="#">RealEstate</a>
-      </div>
-      <!-- Copyright -->
-  </footer>
-  
 
+    <!-- ======= Footer ======= -->
+    <section class="section-footer bottom">
+        <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8">
+            <div class="widget-a">
+                <div class="w-header-a">
+                    <a href="/" class="nav__logo"><img src="../static/img/logo.ico" alt="logo" class="logo"></a>
+                </div>
+                <div class="w-body-a">
+                <p class="w-text-a color-text-a">
+                    Enim minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip exea commodo consequat duis
+                    sed aute irure.
+                </p>
+                </div>
+                <div class="w-footer-a">
+                <ul class="list-unstyled">
+                    <li class="color-a">
+                    <span class="color-text-a">Email :</span> realestate@gmail.com
+                    </li>
+                    <li class="color-a">
+                    <span class="color-text-a">Phone :</span> +216 54 356 945
+                    </li>
+                </ul>
+                </div>
+            </div>
+            </div>
+            <div class="col-sm-12 col-md-4 section-md-t3">
+            <div class="widget-a">
+                <div class="w-header-a">
+                <h3 class="w-title-a text-brand">The Company</h3>
+                </div>
+                <div class="w-body-a">
+                <div class="w-body-a">
+                    <ul class="list-unstyled">
+                    <li class="item-list-a">
+                        <i class="bi bi-chevron-right"></i> <a href="#">Site Map</a>
+                    </li>
+                    <li class="item-list-a">
+                        <i class="bi bi-chevron-right"></i> <a href="#">Legal</a>
+                    </li>
+                    <li class="item-list-a">
+                        <i class="bi bi-chevron-right"></i> <a href="#">Platform Admin</a>
+                    </li>
+                    <li class="item-list-a">
+                        <i class="bi bi-chevron-right"></i> <a href="#">Careers</a>
+                    </li>
+                    <li class="item-list-a">
+                        <i class="bi bi-chevron-right"></i> <a href="#">Affiliate</a>
+                    </li>
+                    <li class="item-list-a">
+                        <i class="bi bi-chevron-right"></i> <a href="#">Privacy Policy</a>
+                    </li>
+                    </ul>
+                </div>
+                </div>
+            </div>
+            </div>
+            
+        </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+            <nav class="nav-footer">
+                <ul class="list-inline">
+                <li class="list-inline-item">
+                    <a href="/">Home</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="about">About</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="/properties">All Properties</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="/add_property">Add Property</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="/contact">Contact</a>
+                </li>
+                </ul>
+            </nav>
+            <div class="socials-a">
+                <ul class="list-inline">
+                <li class="list-inline-item">
+                    <a href="#">
+                    <i class="bi bi-facebook" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="#">
+                    <i class="bi bi-twitter" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="#">
+                    <i class="bi bi-instagram" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="#">
+                    <i class="bi bi-linkedin" aria-hidden="true"></i>
+                    </a>
+                </li>
+                </ul>
+            </div>
+            <div class="copyright-footer">
+                <p class="copyright color-text-a">
+                &copy; Copyright
+                <span class="color-a">RealEstate</span> All Rights Reserved.
+                </p>
+            </div>
+            </div>
+        </div>
+        </div>
+    </footer><!-- End  Footer -->
+
+    <!-- Bootstrap JS (including Popper.js for dropdowns) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <script crossorigin="anonymous"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
     <!-- Custom JavaScript -->
-    {% block custom_js %}{% endblock %}
+    {% block custom_js %}
+    
+    {% endblock %}
 </body>
 </html>
