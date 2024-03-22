@@ -7,13 +7,14 @@ class Property:
     def __init__(self, data):
         self.id = data["property_id"]
         self.title = data["title"]
+        self.type = data["type"]
         self.description = data["description"]
-        self.price = data["price"]
         self.address = data["address"]
         self.bedrooms = data["bedrooms"]
         self.bathrooms = data["bathrooms"]
         self.space = data["space"]
         self.status = data["status"]
+        self.price = data["price"]
         self.image_path = data["image_path"]
         self.created_at = data["created_at"]
         self.updated_at = data["updated_at"]
@@ -22,8 +23,8 @@ class Property:
     @classmethod
     def create(cls, data):
         query = """
-                INSERT INTO properties (title, description, price, address, bedrooms, bathrooms, space,  status, seller_id)
-                VALUES (%(title)s, %(description)s, %(price)s, %(address)s, %(bedrooms)s, %(bathrooms)s, %(space)s, %(status)s, %(seller_id)s)
+                INSERT INTO properties (title, description, type, price, address, bedrooms, bathrooms, space,  status, image_path, seller_id)
+                VALUES (%(title)s, %(description)s, %(type)s, %(price)s, %(address)s, %(bedrooms)s, %(bathrooms)s, %(space)s, %(status)s, %(image_path)s, %(seller_id)s)
                 """
         property_id = connectToMySQL(DATABASE).query_db(query, data)
         return property_id
@@ -107,6 +108,13 @@ class Property:
 
         results = connectToMySQL(DATABASE).query_db(query, params)
         return results
+    
+
+    #* =========== DELETE ===========
+    @classmethod
+    def delete_property(cls, id):
+        query = "DELETE FROM properties WHERE property_id = %(id)s;"
+        connectToMySQL(DATABASE).query_db(query, {'id': id})
 
 
     @staticmethod

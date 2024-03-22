@@ -3,7 +3,28 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(mymap);
 var marker = L.marker([0, 0]).addTo(mymap);
-marker.bindPopup("tunisia").openPopup();
+marker.bindPopup(Property.address).openPopup();
+
+
+// Function to update marker position based on address fetched from Flask route
+function updateMarkerFromFlask(propertyId) {
+    axios.get('/get_address', {
+        params: {
+            property_id: propertyId
+        }
+    })
+    .then(function (response) {
+        var data = response.data;
+        if (data && data.address) {
+            updateMarker(data.address);  // Call the original updateMarker function with the fetched address
+        } else {
+            console.error('Error fetching address:', data.error);
+        }
+    })
+    .catch(function (error) {
+        console.error('Error fetching address:', error);
+    });
+}
 
 // Function to update marker position based on address
 function updateMarker(address) {
@@ -27,18 +48,24 @@ function updateMarker(address) {
     });
 }
 
-// Example: Update marker position for Tunis, Tunisia
-updateMarker('canada');
+
+
+// Example usage
+updateMarkerFromFlask(Property.address);  // Pass the property ID to fetch its address from MySQL
+
 
 // Filter
 document.addEventListener('DOMContentLoaded', function() {
     const filterButtons = document.querySelectorAll('[name="show_all"], [name="for_sell"], [name="for_rent"]');
     
+    
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
+            console.log(filterButtons);
             // Remove the active class from all buttons
             filterButtons.forEach(btn => btn.classList.remove('active'));
-
+            console.log("hello");
+            console.log(this);
             // Add the active class to the clicked button
             this.classList.add('active');
 
@@ -64,3 +91,25 @@ document.addEventListener('DOMContentLoaded', function() {
 // }
 
 
+// Spinner
+var spinner = function () {
+    setTimeout(function () {
+        if ($('#spinner').length > 0) {
+            $('#spinner').removeClass('show');
+        }
+    }, 1);
+};
+spinner();
+
+ // Back to top button
+ $(window).scroll(function () {
+    if ($(this).scrollTop() > 300) {
+        $('.back-to-top').fadeIn('slow');
+    } else {
+        $('.back-to-top').fadeOut('slow');
+    }
+});
+$('.back-to-top').click(function () {
+    $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
+    return false;
+});

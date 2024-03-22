@@ -1,0 +1,106 @@
+
+    {% extends "layout.html" %}
+
+    {% block content %}
+        <main id="main">
+            {% with msg = get_flashed_messages(with_categories=True) %}
+                {% if msg %}
+                {% for category, message in msg %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+                {% endif %}
+            {% endwith %}
+    <!-- Bootstrap 5 Contact Form Snippet -->
+    <div class="container-fluid px-5 my-5">
+        <div class="row justify-content-center">
+            <div class="col-xl-10">
+                <div class="card border-0 rounded-3 shadow-lg overflow-hidden">
+                    <div class="card-body p-0">
+                        <div class="row g-0">
+                            <div class="col-sm-6 d-none d-sm-block">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="contact-map box">
+                                        <div id="map" class="contact-map">
+                                            <iframe width="100%" height="600" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=Coding%20Dojo%20Los%20Angeles+(My%20Business%20Name)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"><a href="https://www.gps.ie/">gps trackers</a></iframe></div>                    </div>
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class="col-sm-6 p-4">
+                                <div class="text-center">
+                                    <div class="h3 fw-light">Contact Us</div>
+                                </div>
+
+
+
+                                <form action="contacte" method="post"id="contactForm" data-sb-form-api-token="API_TOKEN">
+
+                                    <!-- Name Input -->
+
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="name" type="text" placeholder="Name"
+                                            data-sb-validations="required" />
+                                        <label for="name">Name</label>
+                                        <div class="invalid-feedback" data-sb-feedback="name:required">Name is required.
+                                        </div>
+                                    </div>
+                                    
+
+                                    <!-- Email Input -->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="emailAddress" type="email"
+                                            placeholder="Email Address" data-sb-validations="required,email" />
+                                        <label for="emailAddress">Email Address</label>
+                                        <div class="invalid-feedback" data-sb-feedback="emailAddress:required">Email
+                                            Address is required.</div>
+                                        <div class="invalid-feedback" data-sb-feedback="emailAddress:email">Email
+                                            Address Email is not valid.</div>
+                                    </div>
+
+                                    <!-- Message Input -->
+                                    <div class="form-floating mb-3">
+                                        <textarea class="form-control" id="message" type="text" placeholder="Message"
+                                            style="height: 10rem;" data-sb-validations="required"></textarea>
+                                        <label for="message">Message</label>
+                                        <div class="invalid-feedback" data-sb-feedback="message:required">Message is
+                                            required.</div>
+                                    </div>
+
+                                 
+
+                                    <!-- Submit error message -->
+                                    <div class="d-none" id="submitErrorMessage">
+                                        <div class="text-center text-danger mb-3">Error sending message!</div>
+                                    </div>
+
+                                    <!-- Submit button -->
+                                    <div class="col-12">
+                                        <div class="d-grid my-3">
+                                          <button class="btn btn-primary btn-lg" type="submit">Send</button>
+                                        </div>
+                                      </div>
+                                </form>
+                                <!-- End of contact form -->
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CDN Link to SB Forms Scripts -->
+    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+{% endblock %}
+ <!-- Vendor JS Files -->
+ <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+ <script src="../static/vendor/swiper/swiper-bundle.min.js"></script>
+ <script src="../static/vendor/php-email-form/validate.js"></script>
+</body>
+
+</html>

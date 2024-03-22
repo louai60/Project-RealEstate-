@@ -1,168 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layout.html" %}
 
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
-
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
-    
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="../static/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
-
-    <style>
-        /*** Property List ***/
-        .nav-pills .nav-item .btn {
-            color: var(--dark);
-        }
-
-        .nav-pills .nav-item .btn:hover,
-        .nav-pills .nav-item .btn.active {
-            color: #FFFFFF;
-        }
-
-        .property-item {
-            box-shadow: 0 0 30px rgba(0, 0, 0, .08);
-        }
-
-        .property-item img {
-            transition: .5s;
-        }
-
-        .property-item:hover img {
-            transform: scale(1.1);
-        }
-
-        .property-item .border-end {
-            border-right: 1px dashed #0d6efd!important;
-        }
-
-        .pages {
-            padding: 30px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .pages .page-item {
-            border: 2px solid #444444;
-            border-radius: 5px;
-            margin: 2px;
-        } 
-
-        .pages .page-item > * {
-            color: #000;
-            font-size: large;
-        }
-    </style>
-    
-</head>
-<body>
-    {% extends "layout.html" %}
-    
-    {% block content %}
-    <!-- Property List Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            {% with msg = get_flashed_messages(with_categories=True) %}
-                {% if msg %}
-                    {% for category, message in msg %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                        <strong>{{ message }}</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-            <div class="row g-0 gx-5 align-items-end">
-                <div class="col-lg-6">
-                    <div class="text-start mx-auto mb-5 wow slideInLeft" data-wow-delay="0.1s">
-                        <h1 class="mb-3">Property Listing</h1>
-                        <p>Eirmod sed ipsum dolor sit rebum labore magna erat. Tempor ut dolore lorem kasd vero ipsum sit eirmod sit diam justo sed rebum.</p>
-                    </div>
+{% block content %}
+<!-- Property List Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+    <!-- Spinner Start -->
+    <!-- <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div> -->
+    <!-- Spinner End -->
+        {% with msg = get_flashed_messages(with_categories=True) %}
+            {% if msg %}
+                {% for category, message in msg %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-                <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
-                    <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
-                        <li class="nav-item me-2">
-                            <a class="btn btn-outline-primary active" name="show_all"  href="/properties?status=show_all">All Properties</a>
-                        </li>
-                        <li class="nav-item me-2">
-                            <a class="btn btn-outline-primary" name="for_sell" href="/properties?status=for_sell">For Sell</a>
-                        </li>
-                        <li class="nav-item me-0">
-                            <a class="btn btn-outline-primary" name="for_rent" href="/properties?status=for_rent">For Rent</a>
-                        </li>
-                    </ul>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <div class="row g-0 gx-5 align-items-end">
+            <div class="col-lg-6">
+                <div class="text-start mx-auto mb-5 wow slideInLeft" data-wow-delay="0.1s">
+                    <h1 class="mb-3">Property Listing</h1>
+                    <p>Eirmod sed ipsum dolor sit rebum labore magna erat. Tempor ut dolore lorem kasd vero ipsum sit eirmod sit diam justo sed rebum.</p>
                 </div>
             </div>
-            <div class="tab-content">
-                <div id="tab-1" class="tab-pane fade show p-0 active">
-                    <div class="row g-4">
-                        {% for property in all_properties %}
-                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="property-item rounded overflow-hidden">
-                                <div class="position-relative overflow-hidden">
-                                    <a href="/property/{{ property.id }}"><img class="img-fluid" src="../static/img/property-3.jpg" alt=""></a>
-                                    <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">{{ property.status }}</div>
-                                </div>
-                                <div class="p-4 pb-0">
-                                    <h5 class="text-primary mb-3">${{ property.price }}</h5>
-                                    <a class="d-block h5 mb-2" href="/property/{{ property.id }}">{{ property.title }}</a>
-                                    <p>{{ property.description }}</p>
-                                    <p><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ property.address }}</p>
-                                </div>
-                                <div class="d-flex">
-                                    <small class="flex-fill text-center py-2"><i class="fa fa-ruler-combined text-primary me-2"></i>{{ property.space }} Sqft</small>
-                                    <small class="flex-fill text-center py-2"><i class="fa fa-bed text-primary me-2"></i>{{ property.bedrooms }} Bed</small>
-                                    <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>{{ property.bathrooms }} Bath</small>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
+            <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
+                <div class="row">
+                    <div class="col-md-4"><h5>Sort By : </h5></div>
+                    <div class="col-md-8">
+                        <select class="form-select" onchange="location = this.value;">
+                            <option value="/properties?status=show_all" {% if current_path == '/properties' %}selected{% endif %}>All Properties</option>
+                            <option value="/properties?status=for_sell" {% if current_path == '/properties?status=for_sell' %}selected{% endif %}>For Sell</option>
+                            <option value="/properties?status=for_rent" {% if current_path == '/properties?status=for_rent' %}selected{% endif %}>For Rent</option>
+                        </select>
                     </div>
                 </div>
-            </div>
-            <div class="pages">
-                <ul class="pagination">
-                  <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                    </a>
-                  </li>
-                </ul>
             </div>
         </div>
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane fade show p-0 active">
+                <div class="row g-4">
+                    {% for property in all_properties %}
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="property-item rounded overflow-hidden">
+                            <div class="position-relative overflow-hidden">
+                                {% if property.image_path %}
+                                <img src="{{ property.image_path }}" alt="{{ property.title }}" width="250">
+                                {% else %}
+                                    <p>No image available</p>
+                                {% endif %}                             
+                                <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">{{ property.status }}</div>
+                            </div>
+                            <div class="p-4 pb-0">
+                                <h5 class="text-primary mb-3">${{ property.price }}</h5>
+                                <a class="d-block h5 mb-2" href="/property/{{ property.id }}">{{ property.title }}</a>
+                                <p>{{ property.description }}</p>
+                                <p><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ property.address }}</p>
+                            </div>
+                            <div class="d-flex">
+                                <small class="flex-fill text-center py-2"><i class="fa fa-ruler-combined text-primary me-2"></i>{{ property.space }} Sqft</small>
+                                <small class="flex-fill text-center py-2"><i class="fa fa-bed text-primary me-2"></i>{{ property.bedrooms }} Bed</small>
+                                <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>{{ property.bathrooms }} Bath</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="pages">
+            <ul class="pagination">
+                <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+                </li>
+            </ul>
+        </div>
     </div>
-    <!-- Property List End -->
-    {% endblock %}
-    
-    <!-- Template Javascript -->
-    <script src="../static/script.js"></script>
-</body>
-</html>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the current URL path
+        const currentPath = window.location.pathname;
+
+        // Check if the current path matches any of the navigation links and add the 'active' class
+        document.querySelectorAll('.nav-pills .nav-item a').forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('active');
+            }
+        });
+    });
+</script>
+<!-- Property List End -->
+{% endblock %}

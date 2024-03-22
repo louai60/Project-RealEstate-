@@ -1,18 +1,22 @@
-from flask import Flask, abort, redirect, render_template, request, flash, session
-from flask_app import app
+from flask import Flask, abort, jsonify, redirect, render_template, request, flash, session
+from flask_app import DATABASE, app
+from flask_app.configs.mysqlconnection import MySQLConnection
 from flask_app.models.property import Property
 from flask_app.models.user import User
 import os
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = '../static/uploads'
+
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+# Configure the upload folder
+UPLOAD_FOLDER = '/static/uploads/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # @app.route("/")
 # def layout():
@@ -97,6 +101,32 @@ def properties():
 
 
 
+# @app.route("/add_property", methods=['GET', 'POST'])
+# def display_create_property():
+#     if "user_id" not in session:
+#         flash("You need to be logged in to add a property.", "danger")
+#         return redirect("/")
+
+#     if request.method == 'POST':
+#         # Check if a property is valid
+#         if not Property.validate_property(request.form):
+#             flash("Invalid property data!", "danger")
+#             return redirect('/add_property')  
+        
+#         selected_status = request.form.get('status')
+
+#         data = {
+#             **request.form,
+#             "seller_id": session["user_id"],
+#             "status": selected_status
+#         }
+#         id = Property.create(data)  
+#         flash("Property added successfully!", "success")
+#         return redirect(f'/property/{id}')
+
+#     return render_template("add_property.html")
+
+
 @app.route("/add_property", methods=['GET', 'POST'])
 def display_create_property():
     if "user_id" not in session:
@@ -107,19 +137,60 @@ def display_create_property():
         # Check if a property is valid
         if not Property.validate_property(request.form):
             flash("Invalid property data!", "danger")
-            return redirect('/add_property')  
-        
+            return redirect('/add_property')
+
+        # Handle file upload
+        file = request.files['image']
+        print('***********************',file)
+        if file.filename == '':
+            flash("No file selected!", "danger")
+            return redirect('/add_property')
+
+        if file:
+            # Create the uploads directory if it doesn't exist
+            uploads_dir = os.path.join(app.config['UPLOAD_FOLDER'])
+            if not os.path.exists(uploads_dir):
+                os.makedirs(uploads_dir)
+
+            # Save the file to the uploads directory
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
         selected_status = request.form.get('status')
 
         data = {
             **request.form,
             "seller_id": session["user_id"],
-            "status": selected_status
+            "status": selected_status,
+            "image_path": os.path.join(app.config['UPLOAD_FOLDER'], filename)  
         }
-        id = Property.create(data)  
+        id = Property.create(data)
+        print('----------------------------',id)
         flash("Property added successfully!", "success")
         return redirect(f'/property/{id}')
 
     return render_template("add_property.html")
 
 
+
+
+
+# @app.route('/get_address', methods=['GET'])
+# def get_address():
+#     property_id = request.args.get('property_id')
+#     if not property_id:
+#         return jsonify({'error': 'Property ID is missing'})
+
+#     try:
+#         conn = MySQLConnection.connector.connect(DATABASE)
+#         cursor = conn.cursor()
+#         cursor.execute('SELECT address FROM properties WHERE property_id = %s', (property_id,))
+#         address = cursor.fetchone()[0] if cursor.rowcount > 0 else None
+#         conn.close()
+
+#         if address:
+#             return jsonify({'address': address})
+#         else:
+#             return jsonify({'error': 'Address not found for the given property ID'})
+#     except Exception as e:
+#         return jsonify({'error': str(e)})

@@ -4,4 +4,4 @@ app = Flask(__name__)
 app.secret_key = "SHHH, don't share this with anyone or push it into github"
 
 
-DATABASE = 'recipes_schema'
+DATABASE = 'realestate(project)_schema'

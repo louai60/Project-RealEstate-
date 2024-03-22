@@ -1,3 +1,4 @@
+from pprint import pprint
 from flask_app import app
 from flask import redirect, render_template, request, flash, session
 from flask_bcrypt import Bcrypt
@@ -9,6 +10,7 @@ bcrypt = Bcrypt(app)
 def show_register():
     return render_template("register.html")
 
+
 @app.route("/register", methods=["POST"])
 def process_register():
     if request.method == "POST":
@@ -18,29 +20,44 @@ def process_register():
         pw_hash = bcrypt.generate_password_hash(request.form["password"])
         data = {
             **request.form,
-            "password": pw_hash,
-            "is_admin": False  
+            "password": pw_hash
         }
 
-        if request.form["email"] == "admin@gmail.com" and request.form["password"] == "password":
-            data["is_admin"] = True
+       
+        session["user_id"] = User.create(data)
+        # pprint("!!!!!!!!!!!!!!!!!!!!!!!!!!",user_id)
 
-        user_id = User.create(data)
-        session["user_id"] = user_id
-
-        new_user = User.get_by_id(user_id)
-        flash(f"Success: welcome {new_user.username}", "success")
+        # new_user = User.get_by_id(user_id)
+        # print("////////////////////////////",user_id)
+        # flash(f"Success: welcome {new_user.username}", "success")
         
-        if data["is_admin"]:
-            return redirect("/admin/dashboard")  
-        else:
-            return redirect("/")
+      
+        return redirect("/")
     
     return render_template("register.html")
 
-@app.route("/admin/dashboard")
-def admin():
-    return render_template("admin.html")
+# @app.route("/register", methods=["GET", "POST"])
+# def process_register():
+#     if request.method == "POST":
+#         if not User.validate_user(request.form):
+#             return redirect("/register")
+        
+#         pw_hash = bcrypt.generate_password_hash(request.form["password"])
+#         data = {
+#             **request.form,
+#             "password": pw_hash
+#         }
+
+#         user_id = User.create(data)
+#         print("--------------------------", user_id)  
+        
+#         session["user_id"] = user_id
+#         print("**************************", session)  
+
+#         flash("Success: User registered and logged in", "success")
+#         return redirect("/")
+      
+#     return render_template("register.html")
 
 @app.route("/login")
 def login():
@@ -63,11 +80,9 @@ def process_login():
 
     session["user_id"] = user_in_db.id
 
-    if user_in_db.is_admin:
-        return redirect("/admin/dashboard") 
-    else:
-        flash(f"Success: welcome {user_in_db.username} ", "success")
-        return redirect("/")
+  
+    flash(f"Success: welcome {user_in_db.username} ", "success")
+    return redirect("/")
 
 
 @app.route("/logout")
