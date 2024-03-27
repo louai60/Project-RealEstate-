@@ -45,7 +45,7 @@
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-light navbar-light">
-                <a href="/admin" class="navbar-brand mx-4 mb-3">
+                <a href="/admin/users" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>DASHBOARD</h3>
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
@@ -61,7 +61,6 @@
                 <div class="navbar-nav w-100">
                     <a href="/admin/users" class="nav-item nav-link  active" id="users-link"><i class="fa fa-laptop me-2"></i>users</a>
                     <a href="/admin/all_properties" class="nav-item nav-link " id="properties-link"><i class="fa fa-tachometer-alt me-2"></i>Properties</a>
-
                 </div>
                 </div>
             </nav>
@@ -80,72 +79,53 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="fa fa-envelope me-lg-2"></i>
-                            <span class="d-none d-lg-inline-flex">Message</span>
+                            <span class="d-none d-lg-inline-flex">Message</a></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            {% for message in messages %}
                             <a href="#" class="dropdown-item">
                                 <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="../../static/img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                    <img class="rounded-circle" src="../../static/img/profile_pic.jpg" alt="" style="width: 40px; height: 40px;">
                                     <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
+                                        <h6 class="fw-normal mb-0">{{ message.sender_name }}User sent you a message</h6>
+                                        <small>{{ message.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</small>
                                     </div>
                                 </div>
                             </a>
                             <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="../../static/img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="../../static/img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all message</a>
+                            {% endfor %}
+                            <a href="/admin/messages" class="dropdown-item text-center">See all messages</a>
                         </div>
                     </div>
+
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="fa fa-bell me-lg-2"></i>
                             <span class="d-none d-lg-inline-flex">Notifications</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            {% if session.get("admin_notifications") %}
+                            <hr class="dropdown-divider">
+                            {% for notification in session.get("admin_notifications") %}
                             <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Profile updated</h6>
-                                <small>15 minutes ago</small>
+                                <h6 class="fw-normal mb-0">{{ notification }}</h6>
+                                <small>15 Minutes ago</small>
                             </a>
                             <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">New user added</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Password changed</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
+                            {% endfor %}
+                            {% endif %}
                             <a href="#" class="dropdown-item text-center">See all notifications</a>
                         </div>
                     </div>
+                    
+
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <img class="rounded-circle me-lg-2" src="../../static/img/user.jpg" alt="" style="width: 40px; height: 40px;">
                             <span class="d-none d-lg-inline-flex">Louay Saafi</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            <a href="/" class="dropdown-item">Go to Platform</a>
                             <a href="#" class="dropdown-item">My Profile</a>
                             <a href="#" class="dropdown-item">Settings</a>
                             <a href="#" class="dropdown-item">Log Out</a>
@@ -164,34 +144,37 @@
                             <i class="fa fa-chart-line fa-3x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">Today Sale</p>
-                                <h6 class="mb-0">$1234</h6>
+                                <h6 class="mb-0" id="todaySaleCounter">0</h6> <!-- Counter Element -->
                             </div>
                         </div>
                     </div>
+                    <!-- Counter Element for Today Sale -->
                     <div class="col-sm-6 col-xl-3">
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                             <i class="fa fa-chart-bar fa-3x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">Total Sale</p>
-                                <h6 class="mb-0">$1234</h6>
+                                <h6 class="mb-0" id="totalSaleCounter">0</h6> <!-- Counter Element -->
                             </div>
                         </div>
                     </div>
+                    <!-- Counter Element for Total Sale -->
                     <div class="col-sm-6 col-xl-3">
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                             <i class="fa fa-chart-area fa-3x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">Today Revenue</p>
-                                <h6 class="mb-0">$1234</h6>
+                                <h6 class="mb-0" id="todayRevenueCounter">0</h6> <!-- Counter Element -->
                             </div>
                         </div>
                     </div>
+                    <!-- Counter Element for Today Revenue -->
                     <div class="col-sm-6 col-xl-3">
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                             <i class="fa fa-chart-pie fa-3x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">Total Revenue</p>
-                                <h6 class="mb-0">$1234</h6>
+                                <h6 class="mb-0" id="totalRevenueCounter">0</h6> <!-- Counter Element -->
                             </div>
                         </div>
                     </div>
@@ -232,20 +215,58 @@
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
     <script>
-        // Get the current URL path
         const currentPath = window.location.pathname;
     
-        // Remove the 'active' class from all navigation links
         document.querySelectorAll('.nav-item.nav-link').forEach(link => {
             link.classList.remove('active');
         });
     
-        // Check if the current path matches any of the navigation links and add the 'active' class
         if (currentPath === '/admin/users') {
             document.getElementById('users-link').classList.add('active');
         } else if (currentPath === '/admin/all_properties') {
             document.getElementById('properties-link').classList.add('active');
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var todaySaleCounter = document.getElementById('todaySaleCounter');
+            var totalSaleCounter = document.getElementById('totalSaleCounter');
+            var todayRevenueCounter = document.getElementById('todayRevenueCounter');
+            var totalRevenueCounter = document.getElementById('totalRevenueCounter');
+
+            var todaySaleValue = 0;
+            var totalSaleValue = 0;
+            var todayRevenueValue = 0;
+            var totalRevenueValue = 0;
+
+            var targetTodaySale = 256;
+            var targetTotalSale = 408; 
+            var targetTodayRevenue = 745; 
+            var targetTotalRevenue = 925; 
+
+            var speed = 0.01;
+
+            var interval = setInterval(function() {
+            if (todaySaleValue < targetTodaySale) {
+                todaySaleValue++;
+                todaySaleCounter.textContent = todaySaleValue + " TND";
+            }
+            if (totalSaleValue < targetTotalSale) {
+                totalSaleValue++;
+                totalSaleCounter.textContent = totalSaleValue + " TND";
+            }
+            if (todayRevenueValue < targetTodayRevenue) {
+                todayRevenueValue++;
+                todayRevenueCounter.textContent = todayRevenueValue + " TND";
+            }
+            if (totalRevenueValue < targetTotalRevenue) {
+                totalRevenueValue++;
+                totalRevenueCounter.textContent = totalRevenueValue + " TND";
+            }
+            if (todaySaleValue >= targetTodaySale && totalSaleValue >= targetTotalSale && todayRevenueValue >= targetTodayRevenue && totalRevenueValue >= targetTotalRevenue) {
+                clearInterval(interval);
+            }
+        }, speed);
+        });
     </script>
     <!-- Template Javascript -->
     <script src="../../static/dashboard.css"></script>

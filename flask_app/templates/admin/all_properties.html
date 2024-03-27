@@ -1,7 +1,6 @@
 {% extends "admin/base.html" %}
 
 {% block content %}
-<!-- Property Table Start -->
 <div class="container-fluid pt-4 px-4">
     <div class="bg-light text-center rounded p-4">
         <div class="d-flex align-items-center justify-content-between mb-4">
@@ -12,6 +11,7 @@
             <table class="table text-start align-middle table-bordered table-hover mb-0">
                 <thead>
                     <tr class="text-dark">
+                        <th scope="col">Thumbnail</th>
                         <th scope="col">Title</th>
                         <th scope="col">Description</th>
                         <th scope="col">Price</th>
@@ -28,6 +28,16 @@
                 <tbody>
                     {% for property in properties %}
                     <tr>
+                        <td>
+                            {% if property.image_paths %}
+                                {% set first_image_path = property.image_paths[0] %}
+                                <a href="/property/{{ property.id }}">
+                                    <img src="{{ first_image_path }}" alt="{{ property.title }}" width="150">
+                                </a>
+                            {% else %}
+                                <p>No image available for {{ property.title }}</p>
+                            {% endif %}
+                        </td>
                         <td>{{ property.title }}</td>
                         <td>{{ property.description }}</td>
                         <td>{{ property.price }}</td>
@@ -39,7 +49,7 @@
                         <td>{{ property.created_at }}</td>
                         <td>{{ property.seller_id }}</td>
                         <td>
-                            <a class="btn btn-sm btn-primary" href="">Details</a>
+                            <a class="btn btn-sm btn-primary" href="/property/{{property.id}}">Details</a>
                             <form action="/delete_property/{{ property.id }}" method="POST" style="display: inline;">
                                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                             </form>
@@ -51,5 +61,4 @@
         </div>
     </div>
 </div>
-<!-- Property Table End -->
 {% endblock %}

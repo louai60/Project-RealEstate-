@@ -1052,3 +1052,8 @@ footer .credits {
   width: 100%;
 }
 
+.image-container {
+  height: 200px; 
+  overflow: hidden; 
+}
+

@@ -26,10 +26,18 @@
             </div>
             <div class="form-group row">
                 <div class="mb-3 col-sm-4">
-                    <label for="type" class="form-label">Type</label>
+                    <label for="type" class="form-label">Type of your property :</label>
                 </div>
                 <div class="col-sm-8">
-                    <input name="type" class="form-control" type="text">
+                    <select name="type" id="" class="form-control">
+                      <option value="">Type</option>
+                      <option value="Commercial">Commercial</option>
+                      <option value="Office">- Office</option>
+                      <option value="Residential">Residential</option>
+                      <option value="Villa">Villa</option>
+                      <option value="Condominium">Condominium</option>
+                      <option value="Apartement">Apartement</option>
+                    </select>
                 </div>
             </div>
             <div class="form-group row">
@@ -103,7 +111,7 @@
                     <div class="col-lg-6">
                         <div class="file-upload-form" style="display: flex; flex-direction: column; gap: 22px;">
                             <div style="border: 2px solid black; border-radius: 22px; text-align: center; padding: 10px;">
-                                <h2>Drop images here !!</h2>
+                                <h2>Drop images here or browse files</h2>
                             </div>
                             <label for="file" class="file-upload-label">
                                 <div class="file-upload-design">
@@ -113,9 +121,9 @@
                                     </svg>
                                     <p>Drag and Drop</p>
                                     <p>or</p>
-                                    <span class="browse-button">Browse file</span>
+                                    <span class="browse-button">Browse files</span>
                                 </div>
-                                <input type="file" id="file" name="image" accept="image/*" required>
+                                <input type="file" id="file" name="images" multiple accept="image/*" >
                             </label>
                         </div>
                     </div>

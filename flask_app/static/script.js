@@ -91,6 +91,18 @@ document.addEventListener('DOMContentLoaded', function() {
 // }
 
 
+document.getElementById('propertyStatus').addEventListener('change', function() {
+    var selectedStatus = this.value;
+    fetch('/load_properties?status=' + selectedStatus)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('propertyListings').innerHTML = data;
+        })
+        .catch(error => console.error('Error:', error));
+});
+
+
+
 // Spinner
 var spinner = function () {
     setTimeout(function () {
@@ -113,3 +125,18 @@ $('.back-to-top').click(function () {
     $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
     return false;
 });
+
+// function toggleFavorite(event, propertyId) {
+//     event.preventDefault(); // Prevent the form submission
+
+//     // AJAX request to add/remove property from favorites
+//     fetch(`/add_favorite/${propertyId}`, { method: 'POST' })
+//         .then(response => {
+//             // Toggle the heart color
+//             const heartIcon = event.target;
+//             heartIcon.classList.toggle('text-danger'); // Add or remove 'text-danger' class
+//         })
+//         .catch(error => console.error('Error:', error));
+// }
+
+

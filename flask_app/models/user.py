@@ -6,6 +6,7 @@ import re
 # Regular expression for the email format
 EMAIL_REGEX = re.compile(r"^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$")
 
+
 class User:
     def __init__(self, data):
         self.id = data["user_id"]
@@ -15,12 +16,14 @@ class User:
         self.password = data["password"]
         self.created_at = data["created_at"]
         self.updated_at = data["updated_at"]
+        self.is_admin = data["is_admin"] 
+        self.address = data["address"]
 
     @classmethod
     def create(cls, data):
         query = """
-                INSERT INTO users (username, email, phone, password)
-                VALUES(%(username)s, %(email)s, %(phone)s, %(password)s);
+                INSERT INTO users (username, email, phone, password, is_admin)
+                VALUES(%(username)s, %(email)s, %(phone)s, %(password)s, %(is_admin)s);
                 """
         user_id = connectToMySQL(DATABASE).query_db(query, data)
         return user_id
@@ -67,7 +70,7 @@ class User:
     def update(cls, data):
         query = """
                 UPDATE users
-                SET username = %(username)s, email = %(email)s, phone = %(phone)s
+                SET username = %(username)s, email = %(email)s, phone = %(phone)s, address = %(address)s
                 WHERE user_id = %(id)s;
                 """
 
@@ -141,3 +144,5 @@ class User:
             return cls(result[0])
         else:
             return None
+        
+    

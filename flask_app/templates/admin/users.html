@@ -15,6 +15,7 @@
                         <th scope="col">ID</th>
                         <th scope="col">Username</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
                         <th scope="col">Created At</th>
                         <th scope="col">Updated At</th>
                         <th scope="col">Actions</th>
@@ -26,10 +27,11 @@
                         <td>{{ user.id }}</td>
                         <td>{{ user.username }}</td>
                         <td>{{ user.email }}</td>
+                        <td>{{ user.phone }}</td>
                         <td>{{ user.created_at }}</td>
                         <td>{{ user.updated_at }}</td>
                         <td>
-                            <a class="btn btn-sm btn-primary" href="">Details</a>
+                            <a class="btn btn-sm btn-primary" href="/account/{{user.id}}">Details</a>
                             <form action="/delete_user/{{ user.id }}" method="POST" style="display: inline;">
                                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                             </form>

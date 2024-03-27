@@ -13,49 +13,132 @@
             {% endif %}
     {% endwith %}
     <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="{{ property.image_path }}" alt="{{ property.title }}" width="250">
-            </div>
-            <!-- <div class="carousel-item">
-            <img src="../static/img/property-2.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-            <img src="../static/img/property-3.jpg" class="d-block w-100" alt="...">
-            </div> -->
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
+      <div class="carousel-inner">
+          {% for image in image_paths %}
+          <div class="carousel-item {% if loop.first %}active{% endif %} text-center">
+              <img src="{{ image }}" class="d-block w-100" alt="{{property.title}}">
+              <div class="heart-icon position-absolute top-0 end-0 m-3">
+                  {% if session.user_id %}
+                  <form id="favorite-form-{{ loop.index }}" action="{{ url_for('add_favorite', property_id=property.id) }}" method="POST">
+                      <button type="submit" class="btn btn-link" id="favorite-btn-{{ loop.index }}">
+                          <i class="bi bi-heart" id="heart-icon"></i>
+                      </button>
+                  </form>
+                  {% else %}
+                  <p></p>
+                  {% endif %}
+              </div>
+          </div>
+          {% endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+      </button>
+  </div>
+  
+  <div class="row mt-3">
+      {% for image in image_paths %}
+      <div class="col-md-3 mb-3">
+        <div class="image-container text-center">
+          <img src="{{ image }}" class="img-fluid" alt="{{ property.title }}">
+      </div>
+      </div>
+      {% endfor %}
+  </div>
+  
     
     <div class="row mt-5">
         <div class="col-md-8">
-            <p>{{property.description}}</p>
+          <div class="d-flex mb-3 justify-content-between">
+            <h3 style="color: #02076c;">{{property.title}}</h3>
+            <span style="color: #1c4ad3; font-size: larger;" >{{property.price}} TND</span>
+          </div>
 
-            <img src="../static/img/profile2.jpg" alt="user-img" width="36" class="img-circle"><h1>Hosted By : {{ creator.posted_by.username }}</h1>
-            <h4>Joined {{ creator.posted_by.created_at }}</h4>
+          <div class="d-flex mb-3">
+            <small class="flex-fill py-2"><i class="fa fa-ruler-combined text-primary me-2"></i>{{ property.space }} m²</small>
+            <small class="flex-fill py-2"><i class="fa fa-bed text-primary me-2"></i>{{ property.bedrooms }} Bedrooms</small>
+            <small class="flex-fill py-2"><i class="fa fa-bath text-primary me-2"></i>{{ property.bathrooms }} Bathrooms</small>
+          </div>
+        
+          <div class="d-flex profile-pic mb-3">
+              <img src="../static/img/profile2.jpg" alt="user-img" width="36" class="img-circle">
+              <h3 class="ml-3">Created By : {{ property.posted_by.username }}</h3>
+          </div>
 
+          <div class="description">
+              <p>{{property.description}}</p>
+          </div>
 
-            <div class="col-sm-12 col-md-6 col-xl-4">
-                <div class="h-100 bg-light rounded p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">Calender</h6>
-                        <a href="">Show All</a>
-                    </div>
-                    <div id="calender"></div>
-                </div>
-            </div>
+          <div>
+            <p><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ property.address }}</p>
+          </div>
+
+          <div class="col-sm-12 col-md-6 col-xl-4">
+              <!-- <div class="h-100 bg-light rounded p-4">
+                  <div class="d-flex align-items-center justify-content-between mb-4">
+                      <h6 class="mb-0">Calender</h6>
+                      <a href="">Show All</a>
+                  </div>
+                  <div id="calender"></div>
+              </div> -->
+          </div>
         </div>
         <div class="col-md-4 property">
             <div id="mapid"></div>
         </div>
     </div>
+
+    <div class="w-100">
+      <div class="title m-3">
+        <h2 style="color: #43403f;">Enquire about this Property </h2>
+        <hr>
+      </div>
+      <form class="mr-3 ml-3">
+          <div class="form-row d-flex mt-3">
+            <div class="form-group col-md-6 mr-3">
+              <label for="inputPassword4">Name</label>
+              <input type="password" class="form-control" id="name" placeholder="Name">
+            </div>
+            <div class="form-group col-md-6 ">
+              <label for="inputEmail4">Email</label>
+              <input type="email" class="form-control" id="inputEmail4" placeholder="Enter Your Email">
+            </div>
+          </div>
+          <div class="form-row d-flex mt-3">
+            <div class="form-group col-md-6 mr-3">
+              <label for="inputPassword4">Phone</label>
+              <input type="password" class="form-control" id="phone" placeholder="Enter Your Phone">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="inputState">I'm a </label>
+              <select id="inputState" class="form-control">
+                <option selected>Select</option>
+                <option value="buyer">I'm a buyer</option>
+                <option value="tennant">I'm a tennant</option>
+                <option value="tennant">I'm an agent</option>
+                <option value="tennant">other</option>
+              </select>
+            </div>
+          </div>
+       
+          <div class="form-row w-100">
+            <div class="form-group ">
+              <label for="inputCity">Message</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Enter Your Message"></textarea>
+            </div>
+          </div>
+          <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Send</button>
+          </div>
+        </form>
+    </div>
+  </div>
+</section><!-- End Property Single-->
 </div>
 
 {% endblock %}

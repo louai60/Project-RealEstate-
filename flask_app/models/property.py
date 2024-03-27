@@ -1,6 +1,6 @@
 from flask_app.configs.mysqlconnection import connectToMySQL
 from flask_app import DATABASE
-from flask import flash
+from flask import flash, json
 from flask_app.models.user import User
 
 class Property:
@@ -15,18 +15,43 @@ class Property:
         self.space = data["space"]
         self.status = data["status"]
         self.price = data["price"]
-        self.image_path = data["image_path"]
+        self.image_paths = data["image_paths"]
         self.created_at = data["created_at"]
         self.updated_at = data["updated_at"]
         self.seller_id = data["seller_id"]
 
+    # @classmethod
+    # def create(cls, data):
+    #     query = """
+    #             INSERT INTO properties (title, description, type, price, address, bedrooms, bathrooms, space,  status, image_paths, seller_id)
+    #             VALUES (%(title)s, %(description)s, %(type)s, %(price)s, %(address)s, %(bedrooms)s, %(bathrooms)s, %(space)s, %(status)s, %(image_paths)s, %(seller_id)s)
+    #             """
+    #     property_id = connectToMySQL(DATABASE).query_db(query, data)
+    #     return property_id
+    
+    # @classmethod
+    # def create(cls, data):
+    #     image_paths = ', '.join(['%s'] * len(data['image_paths']))
+    #     query = """
+    #             INSERT INTO properties (title, description, type, price, address, bedrooms, bathrooms, space, status, image_paths, seller_id)
+    #             VALUES (%(title)s, %(description)s, %(type)s, %(price)s, %(address)s, %(bedrooms)s, %(bathrooms)s, %(space)s, %(status)s, """ + image_paths + """, %(seller_id)s)
+    #             """
+    #     property_id = connectToMySQL(DATABASE).query_db(query, data)
+    #     return property_id
+        
     @classmethod
     def create(cls, data):
+        image_paths_json = json.dumps(data['image_paths'])
+        
         query = """
-                INSERT INTO properties (title, description, type, price, address, bedrooms, bathrooms, space,  status, image_path, seller_id)
-                VALUES (%(title)s, %(description)s, %(type)s, %(price)s, %(address)s, %(bedrooms)s, %(bathrooms)s, %(space)s, %(status)s, %(image_path)s, %(seller_id)s)
+                INSERT INTO properties (title, description, type, price, address, bedrooms, bathrooms, space, status, image_paths, seller_id)
+                VALUES (%(title)s, %(description)s, %(type)s, %(price)s, %(address)s, %(bedrooms)s, %(bathrooms)s, %(space)s, %(status)s, %(image_paths)s, %(seller_id)s)
                 """
+        
+        data['image_paths'] = image_paths_json
+        
         property_id = connectToMySQL(DATABASE).query_db(query, data)
+    
         return property_id
     
     @classmethod
@@ -59,7 +84,6 @@ class Property:
             WHERE properties.property_id = %(id)s
         """
         result = connectToMySQL(DATABASE).query_db(query, data)
-
         if not result or len(result) == 0:
             return None 
 

@@ -1,18 +1,18 @@
 
-    {% extends "layout.html" %}
+{% extends "layout.html" %}
 
-    {% block content %}
-        <main id="main">
-            {% with msg = get_flashed_messages(with_categories=True) %}
-                {% if msg %}
-                {% for category, message in msg %}
-                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                    <strong>{{ message }}</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% endfor %}
-                {% endif %}
-            {% endwith %}
+{% block content %}
+    <main id="main">
+        {% with msg = get_flashed_messages(with_categories=True) %}
+            {% if msg %}
+            {% for category, message in msg %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                <strong>{{ message }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+        {% endwith %}
     <!-- Bootstrap 5 Contact Form Snippet -->
     <div class="container-fluid px-5 my-5">
         <div class="row justify-content-center">
@@ -36,12 +36,12 @@
 
 
 
-                                <form action="contacte" method="post"id="contactForm" data-sb-form-api-token="API_TOKEN">
+                                <form action="/contact" method="post"id="contactForm" data-sb-form-api-token="API_TOKEN">
 
                                     <!-- Name Input -->
 
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="name" type="text" placeholder="Name"
+                                        <input class="form-control" name="name" type="text" placeholder="Name"
                                             data-sb-validations="required" />
                                         <label for="name">Name</label>
                                         <div class="invalid-feedback" data-sb-feedback="name:required">Name is required.
@@ -51,7 +51,7 @@
 
                                     <!-- Email Input -->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="emailAddress" type="email"
+                                        <input class="form-control" name="email" type="email"
                                             placeholder="Email Address" data-sb-validations="required,email" />
                                         <label for="emailAddress">Email Address</label>
                                         <div class="invalid-feedback" data-sb-feedback="emailAddress:required">Email
@@ -62,7 +62,7 @@
 
                                     <!-- Message Input -->
                                     <div class="form-floating mb-3">
-                                        <textarea class="form-control" id="message" type="text" placeholder="Message"
+                                        <textarea class="form-control" name="message" type="text" placeholder="Message"
                                             style="height: 10rem;" data-sb-validations="required"></textarea>
                                         <label for="message">Message</label>
                                         <div class="invalid-feedback" data-sb-feedback="message:required">Message is

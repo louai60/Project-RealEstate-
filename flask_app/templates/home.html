@@ -1,9 +1,7 @@
-
 <section class="hero">
 {% extends "layout.html" %}
 
   {% block content %}
-  
       {% with msg = get_flashed_messages(with_categories=True) %}
       {% if msg %}
         {% for category, message in msg %}
@@ -57,12 +55,12 @@
                                 <div class="icon"><span class="ion-ios-arrow-down"></span></div>
                                 <select name="property_type" id="" class="form-control">
                                     <option value="">Type</option>
-                                  <option value="commercial">Commercial</option>
-                                  <option value="">- Office</option>
-                                  <option value="">Residential</option>
-                                  <option value="villa">Villa</option>
-                                  <option value="condominium">Condominium</option>
-                                  <option value="apartement">Apartement</option>
+                                    <option value="Commercial">Commercial</option>
+                                    <option value="Office">- Office</option>
+                                    <option value="Residential">Residential</option>
+                                    <option value="Villa">Villa</option>
+                                    <option value="Condominium">Condominium</option>
+                                    <option value="Apartement">Apartement</option>
                                 </select>
                               </div>
                                 </div>
@@ -126,39 +124,122 @@
       </div>   
   </section>
 
-    <section class="ftco-section ftco-no-pb">
-        
-        
-        <!-- Display Search Results -->
+  <section class="pt-5 pb-5">
+  <div class="resultats">
     {% if results %}
     <h2>Search Results</h2>
-    <div class="row">
-        {% for result in results %}
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="property-item rounded overflow-hidden">
-                    <div class="position-relative overflow-hidden">
-                        <a href="/property/{{ result.id }}"><img class="img-fluid"  src="{{ result.image_path }}" alt="property"></a>
-                        <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">{{ result.status }}</div>
-                    </div>
-                    <div class="p-4 pb-0">
-                        <h5 class="text-primary mb-3">${{ result.price }}</h5>
-                        <a class="d-block h5 mb-2" href="/property/{{ result.id }}">{{ result.title }}</a>
-                        <p><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ result.address }}</p>
-                    </div>
-                    <div class="d-flex">
-                        <small class="flex-fill text-center py-2"><i class="fa fa-ruler-combined text-primary me-2"></i>{{ result.space }} Sqft</small>
-                        <small class="flex-fill text-center py-2"><i class="fa fa-bed text-primary me-2"></i>{{ result.bedrooms }} Bed</small>
-                        <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>{{ result.bathrooms }} Bath</small>
-                    </div>
+      <div class="row g-4">
+        {% for property in all_properties %}
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card">
+                <div class="position-relative overflow-hidden">
+                    {% if property.image_paths %}
+                    {% set first_image_path = property.image_paths[0] %}
+                    <a href="/property/{{ property.id }}">
+                        <img src="{{ first_image_path }}" alt="{{ property.title }}" class="d-block w-100">
+                    </a>
+                    {% else %}
+                    <p>No image available for {{ property.title }}</p>
+                    {% endif %}
+                    <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">{{ property.status }}</div>
+                    <div class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">{{ property.type }}</div>
+                </div>
+                <div class="p-4 pb-0">
+                    <h5 class="text-primary mb-3">{{ property.price }} TND</h5>
+                    <a class="d-block h5 mb-2" href="/property/{{ property.id }}">{{ property.title }}</a>
+                    <p><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ property.address }}</p>
+                </div>
+                <div class="d-flex">
+                    <small class="flex-fill text-center py-2"><i class="fa fa-ruler-combined text-primary me-2"></i>{{ property.space }} m²</small>
+                    <small class="flex-fill text-center py-2"><i class="fa fa-bed text-primary me-2"></i>{{ property.bedrooms }} Bedrooms</small>
+                    <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>{{ property.bathrooms }} Bathrooms</small>
+                </div>
+                <div class="heart-icon position-absolute top-0 end-0 m-3">
+                    {% if session.user_id %}
+                    <form id="favorite-form" action="{{ url_for('add_favorite', property_id=property.id) }}" method="POST">
+                        <button type="submit" class="btn btn-link" id="favorite-btn">
+                            <i class="fa-solid fa-heart" id="heart-icon"></i>
+                        </button>
+                    </form>
+                    {% else %}
+                    <i class="fa-solid fa-heart" id="heart-icon"></i>
+                    {% endif %}
                 </div>
             </div>
+        </div>
         {% endfor %}
     </div>
-{% endif %}
-      </div>
-    </section>
+    {% endif %}
+    </div>
+  </div>
+  </section>
+  <section class="pt-5 pb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <h3 class="mb-3">Properties </h3>
+            </div>
+            <div class="col-6 text-right">
+                <a class="btn btn-primary mb-3 mr-1" href="#carouselExampleIndicators2" role="button" data-slide="prev">
+                    <i class="fa fa-arrow-left"></i>
+                </a>
+                <a class="btn btn-primary mb-3 " href="#carouselExampleIndicators2" role="button" data-slide="next">
+                    <i class="fa fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="col-12">
+              <div id="carouselExampleIndicators2" class="carousel slide" data-ride="carousel">
+                  <div class="carousel-inner">
+                      <div class="carousel-item active">
+                          <div class="row g-4">
+                              {% for property in all_properties %}
+                              <div class="col-lg-4 col-md-6 mb-3">
+                                  <div class="card">
+                                      <div class="position-relative overflow-hidden">
+                                          {% if property.image_paths %}
+                                          {% set first_image_path = property.image_paths[0] %}
+                                          <a href="/property/{{ property.id }}">
+                                              <img src="{{ first_image_path }}" alt="{{ property.title }}" class="d-block mh-100">
+                                          </a>
+                                          {% else %}
+                                          <p>No image available for {{ property.title }}</p>
+                                          {% endif %}
+                                          <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">{{ property.status }}</div>
+                                          <div class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">{{ property.type }}</div>
+                                      </div>
+                                      <div class="p-4 pb-0">
+                                          <h5 class="text-primary mb-3">{{ property.price }} TND</h5>
+                                          <a class="d-block h5 mb-2" href="/property/{{ property.id }}">{{ property.title }}</a>
+                                          <p><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ property.address }}</p>
+                                      </div>
+                                      <div class="d-flex">
+                                          <small class="flex-fill text-center py-2"><i class="fa fa-ruler-combined text-primary me-2"></i>{{ property.space }} m²</small>
+                                          <small class="flex-fill text-center py-2"><i class="fa fa-bed text-primary me-2"></i>{{ property.bedrooms }} Bedrooms</small>
+                                          <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>{{ property.bathrooms }} Bathrooms</small>
+                                      </div>
+                                      <div class="heart-icon position-absolute top-0 end-0 m-3">
+                                          {% if session.user_id %}
+                                          <form id="favorite-form" action="{{ url_for('add_favorite', property_id=property.id) }}" method="POST">
+                                              <button type="submit" class="btn btn-link" id="favorite-btn">
+                                                  <i class="fa-solid fa-heart" id="heart-icon"></i>
+                                              </button>
+                                          </form>
+                                          {% else %}
+                                          <i class="fa-solid fa-heart" id="heart-icon"></i>
+                                          {% endif %}
+                                      </div>
+                                  </div>
+                              </div>
+                              {% endfor %}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>                  
+        </div>
+    </div>
+  </section>
   
-
   {% endblock %}
 
 

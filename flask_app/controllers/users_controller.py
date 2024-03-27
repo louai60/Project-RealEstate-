@@ -20,44 +20,31 @@ def process_register():
         pw_hash = bcrypt.generate_password_hash(request.form["password"])
         data = {
             **request.form,
-            "password": pw_hash
+            "password": pw_hash,
+            "is_admin": False  
         }
 
-       
-        session["user_id"] = User.create(data)
-        # pprint("!!!!!!!!!!!!!!!!!!!!!!!!!!",user_id)
+        if request.form["email"] == "admin@gmail.com" and request.form["password"] == "password":
+            data["is_admin"] = True
 
-        # new_user = User.get_by_id(user_id)
-        # print("////////////////////////////",user_id)
-        # flash(f"Success: welcome {new_user.username}", "success")
+        user_id = User.create(data)
+        session["user_id"] = user_id
+        session["username"] = data["username"]
+        session["email"] = data["email"]
+        session["user_is_admin"] = data["is_admin"]
+
+        new_user = User.get_by_id(user_id)
+        notify_admin(f"{new_user.username} registered")
         
-      
-        return redirect("/")
+        flash(f"Success: welcome {new_user.username}", "success")
+        
+        if data["is_admin"]:
+            return redirect("/admin/users")  
+        else:
+            return redirect("/")
     
     return render_template("register.html")
 
-# @app.route("/register", methods=["GET", "POST"])
-# def process_register():
-#     if request.method == "POST":
-#         if not User.validate_user(request.form):
-#             return redirect("/register")
-        
-#         pw_hash = bcrypt.generate_password_hash(request.form["password"])
-#         data = {
-#             **request.form,
-#             "password": pw_hash
-#         }
-
-#         user_id = User.create(data)
-#         print("--------------------------", user_id)  
-        
-#         session["user_id"] = user_id
-#         print("**************************", session)  
-
-#         flash("Success: User registered and logged in", "success")
-#         return redirect("/")
-      
-#     return render_template("register.html")
 
 @app.route("/login")
 def login():
@@ -79,15 +66,26 @@ def process_login():
         return redirect("/login")
 
     session["user_id"] = user_in_db.id
+    session["user_is_admin"] = user_in_db.is_admin
+    session["username"] = user_in_db.username
+    session["email"] = user_in_db.email
+
+    notify_admin(f"{user_in_db.username} logged in")
 
   
     flash(f"Success: welcome {user_in_db.username} ", "success")
-    return redirect("/")
+    
+    if user_in_db.is_admin:
+        return redirect("/admin/users")
+    else:
+        return redirect("/")
+
 
 
 @app.route("/logout")
 def logout():
     session.clear()
+    notify_admin("User logged Out")
     return redirect("/")
 
 
@@ -106,3 +104,26 @@ def user_account():
         return redirect("/")
 
     return render_template("user_acc.html", user=user_data)
+
+@app.route('/user/update/<int:id>', methods=['POST'])
+def process_updated_user(id):
+    #! Guard Route
+    if "user_id" not in session:
+        return redirect("/")
+    
+    # Grab the user id from the session
+    data = {
+        **request.form,
+        "user_id": session["user_id"],
+        "id": id
+    }
+    # Update the user to the database 
+    User.update(data)
+
+    return redirect('/account')
+
+
+
+     
+def notify_admin(message):
+    session.setdefault("admin_notifications", []).append(message)
